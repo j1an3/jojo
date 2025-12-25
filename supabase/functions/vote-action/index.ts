@@ -27,7 +27,7 @@ serve(async (req) => {
 
     // Create Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    const supabaseServiceKey = Deno.env.get('SERVICE_ROLE_KEY')!
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Check rate limit (create table: vote_logs with ip, fingerprint, voted_at, option_id)
@@ -75,10 +75,16 @@ serve(async (req) => {
       )
     }
 
-    // Increment vote count
+    // Increment vote count (get current, then increment)
+    const { data: currentOption } = await supabase
+      .from('vote_options')
+      .select('vote_count')
+      .eq('id', optionId)
+      .single()
+
     const { error: voteError } = await supabase
       .from('vote_options')
-      .update({ vote_count: supabase.rpc('increment', { x: 1 }) })
+      .update({ vote_count: (currentOption?.vote_count || 0) + 1 })
       .eq('id', optionId)
 
     if (voteError) throw voteError
