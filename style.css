@@ -68,19 +68,26 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+}
 
-    /* Background image - Mobile: trọng tâm ảnh bên phải */
+/* Fixed background - works on mobile */
+.fixed-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
     background-image: url('peakpx.jpg');
     background-size: cover;
     background-position: right center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
 /* Overlay lớp phủ để nội dung dễ đọc */
-body::before {
+.fixed-background::after {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -94,13 +101,12 @@ body::before {
         rgba(10, 10, 15, 0.4) 100%
     );
     pointer-events: none;
-    z-index: 0;
 }
 
 /* Thêm lớp phủ màu tím nhẹ */
-body::after {
+.fixed-background::before {
     content: '';
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
