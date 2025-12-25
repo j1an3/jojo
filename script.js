@@ -30,9 +30,27 @@ let browserFingerprint = null;
 
 async function initFingerprint() {
     if (!browserFingerprint) {
-        browserFingerprint = await BrowserFingerprint.generate();
+        // Fallback if fingerprint.js is blocked by ad blocker
+        if (typeof BrowserFingerprint === 'undefined') {
+            console.warn('BrowserFingerprint blocked, using fallback');
+            browserFingerprint = generateSimpleFingerprint();
+        } else {
+            browserFingerprint = await BrowserFingerprint.generate();
+        }
     }
     return browserFingerprint;
+}
+
+// Simple fallback fingerprint (if BrowserFingerprint is blocked)
+function generateSimpleFingerprint() {
+    const components = [
+        navigator.userAgent,
+        screen.width + 'x' + screen.height,
+        new Date().getTimezoneOffset(),
+        navigator.language,
+        navigator.platform
+    ];
+    return components.join('|');
 }
 
 // ========================================
