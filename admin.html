@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel | JoJo Vote</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Admin specific styles */
+      .admin-header {
+        text-align: center;
+        padding: 2rem 1rem;
+        border-bottom: 2px solid var(--primary-purple);
+        margin-bottom: 2rem;
+      }
+
+      .admin-header h1 {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.8rem;
+        background: var(--gradient-purple);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .admin-header .subtitle {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .login-section {
+        max-width: 400px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background: rgba(26, 26, 37, 0.9);
+        backdrop-filter: blur(10px);
+        border-radius: var(--border-radius-lg);
+        border: 1px solid rgba(155, 77, 255, 0.3);
+      }
+
+      .login-section h2 {
+        font-family: "Orbitron", sans-serif;
+        color: var(--accent-gold);
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .login-form input {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1rem;
+        background: var(--bg-secondary);
+        border: 2px solid transparent;
+        border-radius: var(--border-radius);
+        color: var(--text-primary);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1rem;
+      }
+
+      .login-form input:focus {
+        outline: none;
+        border-color: var(--primary-purple);
+        box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.2);
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 0.85rem;
+        background: var(--gradient-gold);
+        color: var(--bg-primary);
+        border: none;
+        border-radius: var(--border-radius);
+        font-family: "Orbitron", sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+      }
+
+      .login-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      }
+
+      .admin-content {
+        display: none;
+      }
+
+      .admin-content.active {
+        display: block;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: rgba(26, 26, 37, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(155, 77, 255, 0.3);
+        text-align: center;
+      }
+
+      .stat-value {
+        font-family: "Orbitron", sans-serif;
+        font-size: 2rem;
+        color: var(--primary-purple-light);
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-label {
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+      }
+
+      .admin-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        flex: 1;
+        min-width: 150px;
+        padding: 0.75rem 1rem;
+        border: none;
+        border-radius: var(--border-radius);
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+      }
+
+      .action-btn.refresh {
+        background: var(--gradient-purple);
+        color: white;
+      }
+
+      .action-btn.logout {
+        background: var(--bg-secondary);
+        color: var(--text-secondary);
+        border: 1px solid var(--text-muted);
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-card);
+      }
+
+      .admin-option-card {
+        background: rgba(26, 26, 37, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 1.25rem;
+        border-radius: var(--border-radius);
+        border: 1px solid rgba(155, 77, 255, 0.2);
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .admin-option-card.completed {
+        border-color: var(--success);
+        background: rgba(0, 255, 136, 0.05);
+      }
+
+      .admin-option-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .admin-option-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+      }
+
+      .admin-option-card.completed .admin-option-name {
+        text-decoration: line-through;
+        color: var(--text-secondary);
+      }
+
+      .admin-option-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .admin-option-actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .admin-btn {
+        padding: 0.5rem 0.75rem;
+        border: none;
+        border-radius: var(--border-radius);
+        font-family: "Rajdhani", sans-serif;
+        font-weight: 600;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+        text-transform: uppercase;
+      }
+
+      .admin-btn.complete {
+        background: var(--success);
+        color: var(--bg-primary);
+      }
+
+      .admin-btn.uncomplete {
+        background: var(--warning);
+        color: var(--bg-primary);
+      }
+
+      .admin-btn.delete {
+        background: var(--error);
+        color: white;
+      }
+
+      .admin-btn:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+
+      .admin-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .completed-badge {
+        background: var(--success);
+        color: var(--bg-primary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Login Section -->
+      <section id="login-section" class="login-section">
+        <h2>🔒 ADMIN LOGIN</h2>
+        <form id="login-form" class="login-form">
+          <input
+            type="password"
+            id="admin-password"
+            placeholder="Nhập mật khẩu admin..."
+            required
+          />
+          <button type="submit" class="login-btn">ĐĂNG NHẬP</button>
+        </form>
+        <p
+          id="login-error"
+          class="form-error hidden"
+          style="margin-top: 1rem"
+        ></p>
+      </section>
+
+      <!-- Admin Content -->
+      <div id="admin-content" class="admin-content">
+        <div class="admin-header">
+          <h1>⚙️ ADMIN PANEL</h1>
+          <p class="subtitle">Quản lý nội dung vote | ゴゴゴ</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="total-options">0</div>
+            <div class="stat-label">Tổng nội dung</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="completed-count">0</div>
+            <div class="stat-label">Đã hoàn thành</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="pending-count">0</div>
+            <div class="stat-label">Đang chờ</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="total-votes">0</div>
+            <div class="stat-label">Tổng votes</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="admin-actions">
+          <button class="action-btn refresh" onclick="loadAdminOptions()">
+            🔄 Làm mới
+          </button>
+          <button class="action-btn logout" onclick="logout()">
+            🚪 Đăng xuất
+          </button>
+        </div>
+
+        <!-- Options List -->
+        <div id="admin-options-container"></div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden">
+      <span id="toast-message"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
