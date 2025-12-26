@@ -356,6 +356,16 @@ body {
     gap: 0.5rem;
 }
 
+.vote-info, .add-info {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: -0.5rem 0 1rem 0;
+    padding: 0.5rem 0.75rem;
+    background: rgba(155, 77, 255, 0.1);
+    border-left: 3px solid var(--primary-purple);
+    border-radius: 4px;
+}
+
 .completed-options-container {
     display: flex;
     flex-direction: column;
