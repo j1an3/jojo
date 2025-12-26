@@ -72,7 +72,7 @@ serve(async (req) => {
       )
     }
 
-    // Session limit: max 5 options per hour
+    // Session limit: max 10 options per hour
     const oneHourAgo = new Date(Date.now() - 3600000).toISOString()
     const { data: sessionAdds, count } = await supabase
       .from('add_logs')
@@ -80,11 +80,11 @@ serve(async (req) => {
       .or(`ip.eq.${clientIP},fingerprint.eq.${clientFingerprint}`)
       .gte('added_at', oneHourAgo)
 
-    if (count && count >= 5) {
+    if (count && count >= 10) {
       return new Response(
         JSON.stringify({
           error: 'Session limit',
-          message: 'Bạn đã đề xuất tối đa 5 nội dung trong 1 giờ!'
+          message: 'Bạn đã đề xuất tối đa 10 nội dung trong 1 giờ!'
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 429 }
       )

@@ -52,21 +52,21 @@ serve(async (req) => {
       )
     }
 
-    // Check if already voted for this option (24 hours)
-    const oneDayAgo = new Date(Date.now() - 86400000).toISOString()
+    // Check if already voted for this option (1 hour)
+    const oneHourAgo = new Date(Date.now() - 3600000).toISOString()
     const { data: existingVote } = await supabase
       .from('vote_logs')
       .select('*')
       .or(`ip.eq.${clientIP},fingerprint.eq.${clientFingerprint}`)
       .eq('option_id', optionId)
-      .gte('voted_at', oneDayAgo)
+      .gte('voted_at', oneHourAgo)
       .single()
 
     if (existingVote) {
       return new Response(
         JSON.stringify({
           error: 'Already voted',
-          message: 'Bạn đã vote cho nội dung này rồi!'
+          message: 'Bạn đã vote cho nội dung này trong 1 tiếng rồi!'
         }),
         {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
