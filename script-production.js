@@ -38,8 +38,11 @@ async function initFingerprint() {
 // ========================================
 // State
 // ========================================
-const LOCAL_STORAGE_KEY = 'has_voted';
-let hasVoted = localStorage.getItem(LOCAL_STORAGE_KEY) === 'true';
+// ========================================
+// State
+// ========================================
+const VOTE_HISTORY_KEY = 'vote_history';
+let voteHistory = JSON.parse(localStorage.getItem(VOTE_HISTORY_KEY) || '{}');
 
 // ========================================
 // Initialize App
@@ -50,10 +53,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function init() {
-    if (hasVoted) {
-        voteStatus.classList.remove('hidden');
-    }
-
     await loadOptions();
     setupEventListeners();
 }
@@ -152,9 +151,14 @@ function renderOptions(options) {
         else if (rank === 2) rankClass = 'top-2';
         else if (rank === 3) rankClass = 'top-3';
 
-        const buttonText = hasVoted ? 'ĐÃ VOTE' : 'VOTE';
-        const buttonClass = hasVoted ? 'vote-btn voted' : 'vote-btn';
-        const buttonDisabled = hasVoted ? 'disabled' : '';
+        // Check if voted within last 1 hour
+        const lastVoted = voteHistory[option.id];
+        const now = Date.now();
+        const isVoted = lastVoted && (now - lastVoted < 3600000); // 1 hour in ms
+
+        const buttonText = isVoted ? 'ĐÃ VOTE' : 'VOTE';
+        const buttonClass = isVoted ? 'vote-btn voted' : 'vote-btn';
+        const buttonDisabled = isVoted ? 'disabled' : '';
 
         return `
             <div class="option-card" data-id="${option.id}">
@@ -183,8 +187,11 @@ function renderOptions(options) {
 // Handle Vote (Using Edge Function)
 // ========================================
 async function handleVote(optionId, button) {
-    if (hasVoted) {
-        showToast('⚠️ Bạn đã vote rồi! Chỉ được vote 1 lần! WRYYY!', 'warning');
+    const lastVoted = voteHistory[optionId];
+    const now = Date.now();
+
+    if (lastVoted && (now - lastVoted < 3600000)) {
+        showToast('⚠️ Bạn đã vote cho nội dung này rồi! Đợi 1 tiếng nhé! WRYYY!', 'warning');
         return;
     }
 
@@ -216,10 +223,9 @@ async function handleVote(optionId, button) {
             throw new Error(result.message || 'Vote failed');
         }
 
-        // Mark as voted
-        localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
-        hasVoted = true;
-        voteStatus.classList.remove('hidden');
+        // Mark as voted for this option
+        voteHistory[optionId] = Date.now();
+        localStorage.setItem(VOTE_HISTORY_KEY, JSON.stringify(voteHistory));
 
         showToast('✅ Vote thành công! ORA ORA ORA!', 'success');
 
