@@ -76,6 +76,21 @@ function setupEventListeners() {
     });
 
     addOptionForm.addEventListener('submit', handleAddOption);
+
+    // Toggle Completed Options
+    const toggleBtn = document.getElementById('toggle-completed-btn');
+    const completedContainer = document.getElementById('completed-options-container');
+
+    if (toggleBtn && completedContainer) {
+        toggleBtn.addEventListener('click', () => {
+            completedContainer.classList.toggle('hidden');
+            if (completedContainer.classList.contains('hidden')) {
+                toggleBtn.textContent = 'Hiện nội dung';
+            } else {
+                toggleBtn.textContent = 'Ẩn nội dung';
+            }
+        });
+    }
 }
 
 // ========================================

@@ -345,25 +345,39 @@ body {
     border: 1px solid rgba(0, 255, 136, 0.2);
 }
 
+.completed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
 .subsection-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 1rem;
     font-weight: 700;
     color: var(--success);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.vote-info, .add-info {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin: -0.5rem 0 1rem 0;
-    padding: 0.5rem 0.75rem;
-    background: rgba(155, 77, 255, 0.1);
-    border-left: 3px solid var(--primary-purple);
+.toggle-btn {
+    background: transparent;
+    border: 1px solid var(--success);
+    color: var(--success);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    transition: all var(--transition-fast);
+}
+
+.toggle-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
 }
 
 .completed-options-container {
