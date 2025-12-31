@@ -16,18 +16,20 @@
       .admin-header {
         text-align: center;
         padding: 2rem 1rem;
-        border-bottom: 2px solid var(--primary-purple);
+        border-bottom: 2px solid var(--primary-cyan);
         margin-bottom: 2rem;
+        background: linear-gradient(180deg, rgba(0, 255, 242, 0.05), transparent);
       }
 
       .admin-header h1 {
         font-family: "Orbitron", sans-serif;
         font-size: 1.8rem;
-        background: var(--gradient-purple);
+        background: var(--gradient-cold);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(0, 255, 242, 0.3);
       }
 
       .admin-header .subtitle {
@@ -39,42 +41,46 @@
         max-width: 400px;
         margin: 3rem auto;
         padding: 2rem;
-        background: rgba(26, 26, 37, 0.9);
+        background: rgba(13, 27, 42, 0.85);
         backdrop-filter: blur(10px);
         border-radius: var(--border-radius-lg);
-        border: 1px solid rgba(155, 77, 255, 0.3);
+        border: 1px solid rgba(0, 255, 242, 0.2);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       }
 
       .login-section h2 {
         font-family: "Orbitron", sans-serif;
-        color: var(--accent-gold);
+        color: var(--primary-cyan);
         margin-bottom: 1.5rem;
         text-align: center;
+        text-shadow: 0 0 5px var(--primary-cyan);
       }
 
       .login-form input {
         width: 100%;
         padding: 0.85rem 1rem;
         margin-bottom: 1rem;
-        background: var(--bg-secondary);
-        border: 2px solid transparent;
+        background: rgba(5, 11, 20, 0.8);
+        border: 1px solid rgba(0, 255, 242, 0.2);
         border-radius: var(--border-radius);
         color: var(--text-primary);
         font-family: "Rajdhani", sans-serif;
         font-size: 1rem;
+        outline: none;
+        transition: all var(--transition-normal);
       }
 
       .login-form input:focus {
-        outline: none;
-        border-color: var(--primary-purple);
-        box-shadow: 0 0 0 3px rgba(155, 77, 255, 0.2);
+        border-color: var(--primary-cyan);
+        box-shadow: 0 0 10px rgba(0, 255, 242, 0.2);
+        background: rgba(5, 11, 20, 1);
       }
 
       .login-btn {
         width: 100%;
         padding: 0.85rem;
         background: var(--gradient-gold);
-        color: var(--bg-primary);
+        color: #000;
         border: none;
         border-radius: var(--border-radius);
         font-family: "Orbitron", sans-serif;
@@ -82,6 +88,7 @@
         font-size: 0.9rem;
         cursor: pointer;
         transition: all var(--transition-normal);
+        text-transform: uppercase;
       }
 
       .login-btn:hover {
@@ -105,25 +112,34 @@
       }
 
       .stat-card {
-        background: rgba(26, 26, 37, 0.85);
+        background: rgba(13, 27, 42, 0.7);
         backdrop-filter: blur(10px);
         padding: 1.5rem;
         border-radius: var(--border-radius);
-        border: 1px solid rgba(155, 77, 255, 0.3);
+        border: 1px solid rgba(0, 255, 242, 0.1);
         text-align: center;
+        transition: transform var(--transition-normal);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary-cyan);
+        box-shadow: 0 0 15px rgba(0, 255, 242, 0.1);
       }
 
       .stat-value {
         font-family: "Orbitron", sans-serif;
         font-size: 2rem;
-        color: var(--primary-purple-light);
+        color: var(--primary-cyan);
         margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(0, 255, 242, 0.3);
       }
 
       .stat-label {
         color: var(--text-secondary);
         font-size: 0.85rem;
         text-transform: uppercase;
+        letter-spacing: 1px;
       }
 
       .admin-actions {
@@ -144,39 +160,52 @@
         font-size: 0.9rem;
         cursor: pointer;
         transition: all var(--transition-normal);
+        text-transform: uppercase;
       }
 
       .action-btn.refresh {
-        background: var(--gradient-purple);
-        color: white;
+        background: rgba(0, 255, 242, 0.1);
+        border: 1px solid var(--primary-cyan);
+        color: var(--primary-cyan);
+      }
+
+      .action-btn.refresh:hover {
+        background: var(--primary-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--primary-cyan-glow);
       }
 
       .action-btn.logout {
-        background: var(--bg-secondary);
-        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
         border: 1px solid var(--text-muted);
       }
 
       .action-btn:hover {
         transform: translateY(-2px);
-        box-shadow: var(--shadow-card);
       }
 
       .admin-option-card {
-        background: rgba(26, 26, 37, 0.85);
+        background: rgba(13, 27, 42, 0.6);
         backdrop-filter: blur(10px);
         padding: 1.25rem;
         border-radius: var(--border-radius);
-        border: 1px solid rgba(155, 77, 255, 0.2);
+        border: 1px solid rgba(0, 255, 242, 0.1);
         margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
         gap: 1rem;
+        transition: all var(--transition-normal);
+      }
+
+      .admin-option-card:hover {
+        border-color: var(--primary-cyan);
+        background: rgba(13, 27, 42, 0.8);
       }
 
       .admin-option-card.completed {
         border-color: var(--success);
-        background: rgba(0, 255, 136, 0.05);
+        background: rgba(0, 255, 157, 0.05);
       }
 
       .admin-option-info {
@@ -222,12 +251,12 @@
 
       .admin-btn.complete {
         background: var(--success);
-        color: var(--bg-primary);
+        color: #000;
       }
 
       .admin-btn.uncomplete {
         background: var(--warning);
-        color: var(--bg-primary);
+        color: #000;
       }
 
       .admin-btn.delete {
@@ -238,6 +267,7 @@
       .admin-btn:hover {
         transform: scale(1.05);
         opacity: 0.9;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
       }
 
       .admin-btn:disabled {
@@ -247,12 +277,13 @@
 
       .completed-badge {
         background: var(--success);
-        color: var(--bg-primary);
+        color: #000;
         padding: 0.25rem 0.75rem;
         border-radius: 999px;
         font-size: 0.75rem;
         font-weight: 700;
         text-transform: uppercase;
+        box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
       }
     </style>
   </head>
