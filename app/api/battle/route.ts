@@ -3,11 +3,11 @@ import OpenAI from "openai";
 import { buildBattlePrompt } from "@/lib/battle-ai";
 import type { BattleRequest, BattleResponse } from "@/types/stand";
 
-// Server-side only — GROQ_API_KEY is never sent to the client
-const openai = new OpenAI({
-  apiKey: process.env.GROQ_API_KEY,
-  baseURL: "https://api.groq.com/openai/v1",
-});
+function getGroqClient() {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error("GROQ_API_KEY is not set");
+  return new OpenAI({ apiKey, baseURL: "https://api.groq.com/openai/v1" });
+}
 
 export async function POST(req: NextRequest) {
   // Parse request body
@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
   const messages = buildBattlePrompt({ standA, standB });
 
   try {
+    const openai = getGroqClient();
     const completion = await openai.chat.completions.create({
       model: "llama-3.3-70b-versatile",
       messages,
